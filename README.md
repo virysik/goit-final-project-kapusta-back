@@ -1,1 +1,1 @@
-# goit-final-project-kapusta-back
+# goit-team-project-kapusta-backend

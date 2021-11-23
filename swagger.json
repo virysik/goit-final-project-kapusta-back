@@ -1,0 +1,1144 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "1.0.0",
+    "title": "Kapu$ta",
+    "description": "Kapu$ta team project documentation",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "servers": [{ "url": "https://kapusta-team-project.herokuapp.com" }],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Authorization endpoints"
+    },
+    {
+      "name": "Transactions",
+      "description": "Transactions endpoints"
+    }
+  ],
+  "paths": {
+    "/api/users/signup": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "User's registration",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Registration's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthorizationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "409": {
+            "description": "Provided email already exists",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/users/login": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "User's authorization",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Authorization's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorizationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Email or password is wrong",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/users/logout": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "User's logout",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "204": {
+            "description": "Successful operation",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/users/current": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get current User",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCurrentUserResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/users/": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Update user balance",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Update balance object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/updateBalanceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/updateBalanceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      },
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get user balance",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/getBalanceResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/transactions/": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Details of expenses and income",
+        "parameters": [
+          {
+            "in": "queqy",
+            "name": "month",
+            "required": "true",
+            "type": "string",
+            "description": "Transaction date (month)"
+          },
+          {
+            "in": "queqy",
+            "name": "year",
+            "required": "true",
+            "type": "string",
+            "description": "Transaction date (year)"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/detailedInformationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Transactions"],
+        "summary": "Delete transaction",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "required": "true",
+            "type": "string",
+            "description": "Transaction`s Id"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/transactions/incomings": {
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "Income transactions",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Income transactions object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/transactionsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/transactionsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      },
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Summary of current year income by month",
+        "parameters": [
+          {
+            "in": "queqy",
+            "name": "year",
+            "required": "true",
+            "type": "string",
+            "description": "Transaction date (year)"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SummaryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/transactions/incomings/date": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Get income Transaction by date",
+        "parameters": [
+          {
+            "in": "queqy",
+            "name": "day",
+            "type": "string",
+            "description": "Transaction date (day)"
+          },
+          {
+            "in": "queqy",
+            "name": "month",
+            "type": "string",
+            "description": "Transaction date (month)"
+          },
+          {
+            "in": "queqy",
+            "name": "year",
+            "required": "true",
+            "type": "string",
+            "description": "Transaction date (year)"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIncomeTransactionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/transactions/outgoings": {
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "Expenses transactions",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Expenses transactions object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/transactionsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/outgoingsTransactionsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      },
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Summary of current year expenses by month",
+        "parameters": [
+          {
+            "in": "queqy",
+            "name": "year",
+            "required": "true",
+            "type": "string",
+            "description": "Transaction date (year)"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SummaryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/transactions/outgoings/date": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Get outgoings Transaction by date",
+        "parameters": [
+          {
+            "in": "queqy",
+            "name": "day",
+            "type": "string",
+            "description": "Transaction date (day)"
+          },
+          {
+            "in": "queqy",
+            "name": "month",
+            "type": "string",
+            "description": "Transaction date (month)"
+          },
+          {
+            "in": "queqy",
+            "name": "year",
+            "required": "true",
+            "type": "string",
+            "description": "Transaction date (year)"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTransactionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RegistrationRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "AuthorizationRequest": {
+        "type": "object",
+        "required": ["name", "email", "password"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "format": "email"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "RegistrationResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "User's id",
+            "example": "618843346932da16c54281bd"
+          }
+        }
+      },
+      "AuthorizationResponse": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "User"
+          },
+          "balance": {
+            "type": "string",
+            "description": "User's balance",
+            "example": "55000"
+          },
+          "token": {
+            "type": "string",
+            "description": "User's token",
+            "example": "eynR5cCI6IkpXVCJ9.eyJpZCI6Ij1MiwiZX2NDA2NDUyfQ.nzoz39SSRn_oq20TJZNI"
+          }
+        }
+      },
+      "updateBalanceRequest": {
+        "type": "object",
+        "required": ["balance"],
+        "properties": {
+          "balance": {
+            "type": "integer",
+            "description": "User's balance",
+            "example": "55000"
+          }
+        }
+      },
+      "getBalanceResponse": {
+        "type": "object",
+        "properties": {
+          "payload": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "User's id",
+                "example": "618843346932da16c54281bd"
+              },
+              "balance": {
+                "type": "integer",
+                "description": "User's balance",
+                "example": "55000"
+              }
+            }
+          }
+        }
+      },
+      "updateBalanceResponse": {
+        "type": "object",
+        "properties": {
+          "payload": {
+            "type": "integer",
+            "description": "User's balance",
+            "example": "55000"
+          }
+        }
+      },
+      "transactionsRequest": {
+        "type": "object",
+        "required": [
+          "amount",
+          "description",
+          "category",
+          "day",
+          "month",
+          "year"
+        ],
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "description": "Transaction`s amount",
+            "example": "10000"
+          },
+          "description": {
+            "type": "string",
+            "description": "Transaction`s description",
+            "example": "Apple"
+          },
+          "category": {
+            "type": "string",
+            "description": "Transaction`s category",
+            "example": "Food"
+          },
+          "day": {
+            "type": "string",
+            "description": "Transaction`s date (day)",
+            "example": "8"
+          },
+          "month": {
+            "type": "string",
+            "description": "Transaction`s date (month)",
+            "example": "11"
+          },
+          "year": {
+            "type": "string",
+            "description": "Transaction`s date (year)",
+            "example": "2021"
+          }
+        }
+      },
+      "transactionsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "balance": {
+                "type": "integer",
+                "description": "User`s balance",
+                "example": "55000"
+              },
+              "result": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "description": "Transaction`s id",
+                    "example": "618945b63e83a1052b6b5554"
+                  },
+                  "typeOftransactions": {
+                    "type": "boolean",
+                    "description": "Transaction`s type",
+                    "example": "true"
+                  },
+                  "amount": {
+                    "type": "integer",
+                    "description": "Transaction`s amount",
+                    "example": "10000"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Transaction`s description",
+                    "example": "Apple"
+                  },
+                  "category": {
+                    "type": "string",
+                    "description": "Transaction`s category",
+                    "example": "Food"
+                  },
+                  "owner": {
+                    "type": "string",
+                    "description": "User`s id",
+                    "example": "61885ae703bc9278eb40fcc9"
+                  },
+                  "day": {
+                    "type": "string",
+                    "description": "Transaction`s date (day)",
+                    "example": "8"
+                  },
+                  "month": {
+                    "type": "string",
+                    "description": "Transaction`s date (month)",
+                    "example": "11"
+                  },
+                  "year": {
+                    "type": "string",
+                    "description": "Transaction`s date (year)",
+                    "example": "2021"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "outgoingsTransactionsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "balance": {
+                "type": "integer",
+                "description": "User`s balance",
+                "example": "55000"
+              },
+              "result": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "description": "Transaction`s id",
+                    "example": "618945b63e83a1052b6b5554"
+                  },
+                  "typeOftransactions": {
+                    "type": "boolean",
+                    "description": "Transaction`s type",
+                    "example": "false"
+                  },
+                  "amount": {
+                    "type": "integer",
+                    "description": "Transaction`s amount",
+                    "example": "10000"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Transaction`s description",
+                    "example": "Apple"
+                  },
+                  "category": {
+                    "type": "string",
+                    "description": "Transaction`s category",
+                    "example": "Food"
+                  },
+                  "owner": {
+                    "type": "string",
+                    "description": "User`s id",
+                    "example": "61885ae703bc9278eb40fcc9"
+                  },
+                  "day": {
+                    "type": "string",
+                    "description": "Transaction`s date (day)",
+                    "example": "8"
+                  },
+                  "month": {
+                    "type": "string",
+                    "description": "Transaction`s date (month)",
+                    "example": "11"
+                  },
+                  "year": {
+                    "type": "string",
+                    "description": "Transaction`s date (year)",
+                    "example": "2021"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "detailedInformationResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "description": "Type of transaction",
+                      "example": "incomings"
+                    },
+                    "sum": {
+                      "type": "integer",
+                      "description": "Amount for the specified month",
+                      "example": "33000"
+                    }
+                  }
+                },
+                "example": [
+                  { "type": "incomings", "sum": 38600 },
+                  { "type": "expenses", "sum": 21300 }
+                ]
+              },
+              "incomings": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "category": {
+                      "type": "string",
+                      "description": "Name of category",
+                      "example": "ЗП"
+                    },
+                    "sum": {
+                      "type": "string",
+                      "description": "Amount for the specified month",
+                      "example": "35000"
+                    },
+                    "details": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Name of category",
+                            "example": "Моя"
+                          },
+                          "sum": {
+                            "type": "integer",
+                            "description": "Amount for the specified month",
+                            "example": "20000"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": [
+                  {
+                    "category:": "ЗП",
+                    "sum": 35000,
+                    "details": [
+                      { "name": "Моя", "sum": 20000 },
+                      { "name": "Жены", "sum": 15000 }
+                    ]
+                  },
+                  {
+                    "category:": "Доп. доход",
+                    "sum": 3600,
+                    "details": [{ "name": "Шабашка", "sum": 3600 }]
+                  }
+                ]
+              },
+              "expenses": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "category": {
+                      "type": "string",
+                      "description": "Name of category",
+                      "example": "Продукты"
+                    },
+                    "sum": {
+                      "type": "string",
+                      "description": "Amount for the specified month",
+                      "example": "1500"
+                    },
+                    "details": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Name of category",
+                            "example": "Мясо"
+                          },
+                          "sum": {
+                            "type": "integer",
+                            "description": "Amount for the specified month",
+                            "example": "1500"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": [
+                  {
+                    "category:": "Продукты",
+                    "sum": 3000,
+                    "details": [
+                      { "name": "Мясо", "sum": 2000 },
+                      { "name": "Рыба", "sum": 500 },
+                      { "name": "Молоко", "sum": 500 }
+                    ]
+                  },
+                  {
+                    "category:": "Алкоголь",
+                    "sum": 1600,
+                    "details": [
+                      { "name": "Пиво", "sum": 400 },
+                      { "name": "Водка", "sum": 200 },
+                      { "name": "Виски", "sum": 1000 }
+                    ]
+                  },
+                  {
+                    "category:": "Развлечение",
+                    "sum": 1500,
+                    "details": [
+                      { "name": "Кино", "sum": 300 },
+                      { "name": "Боулинг", "sum": 700 },
+                      { "name": "Бильярд", "sum": 500 }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "SummaryResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "year": {
+                "type": "string",
+                "description": "Transaction`s date (year)",
+                "example": "2021"
+              },
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "month": {
+                      "type": "string",
+                      "description": "Transaction`s date (month)",
+                      "example": "10"
+                    },
+                    "sum": {
+                      "type": "string",
+                      "description": "Amount for the current month",
+                      "example": "33000"
+                    }
+                  }
+                },
+                "example": [
+                  { "month": "10", "sum": 33000 },
+                  { "month": "11", "sum": 28000 }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "GetTransactionResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "Transaction`s id",
+                "example": "618945b63e83a1052b6b5554"
+              },
+              "typeOftransactions": {
+                "type": "boolean",
+                "description": "Transaction`s type",
+                "example": "false"
+              },
+              "amount": {
+                "type": "integer",
+                "description": "Transaction`s amount",
+                "example": "10000"
+              },
+              "description": {
+                "type": "string",
+                "description": "Transaction`s description",
+                "example": "Apple"
+              },
+              "category": {
+                "type": "string",
+                "description": "Transaction`s category",
+                "example": "Food"
+              },
+              "owner": {
+                "type": "string",
+                "description": "User`s id",
+                "example": "61885ae703bc9278eb40fcc9"
+              },
+              "day": {
+                "type": "string",
+                "description": "Transaction`s date (day)",
+                "example": "8"
+              },
+              "month": {
+                "type": "string",
+                "description": "Transaction`s date (month)",
+                "example": "11"
+              },
+              "year": {
+                "type": "string",
+                "description": "Transaction`s date (year)",
+                "example": "2021"
+              }
+            }
+          }
+        }
+      },
+      "GetIncomeTransactionResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "Transaction`s id",
+                "example": "618945b63e83a1052b6b5554"
+              },
+              "typeOftransactions": {
+                "type": "boolean",
+                "description": "Transaction`s type",
+                "example": "true"
+              },
+              "amount": {
+                "type": "integer",
+                "description": "Transaction`s amount",
+                "example": "10000"
+              },
+              "description": {
+                "type": "string",
+                "description": "Transaction`s description",
+                "example": "Apple"
+              },
+              "category": {
+                "type": "string",
+                "description": "Transaction`s category",
+                "example": "Food"
+              },
+              "owner": {
+                "type": "string",
+                "description": "User`s id",
+                "example": "61885ae703bc9278eb40fcc9"
+              },
+              "day": {
+                "type": "string",
+                "description": "Transaction`s date (day)",
+                "example": "8"
+              },
+              "month": {
+                "type": "string",
+                "description": "Transaction`s date (month)",
+                "example": "11"
+              },
+              "year": {
+                "type": "string",
+                "description": "Transaction`s date (year)",
+                "example": "2021"
+              }
+            }
+          }
+        }
+      },
+      "GetCurrentUserResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "User's`s id",
+                "example": "618945b63e83a1052b6b5554"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email"
+              },
+              "name": {
+                "type": "string",
+                "description": "User's name",
+                "example": "User"
+              },
+              "balance": {
+                "type": "string",
+                "description": "User's balance",
+                "example": "55000"
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
